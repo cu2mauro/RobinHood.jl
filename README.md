@@ -1,7 +1,5 @@
 # RobinHood
 
-[![Build Status](https://github.com/cu2mauro/RobinHood.jl/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/cu2mauro/RobinHood.jl/actions/workflows/CI.yml?query=branch%3Amaster)
-
 [![Build Status](https://github.com/cu2mauro/RobinHood.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/cu2mauro/RobinHood.jl/actions)
 
 From various quivers of rank functions in supergravity backgrounds, use numerical optimization with Julia to solve the Nambu-Goto Wilson Loop and investigate confinement and screening

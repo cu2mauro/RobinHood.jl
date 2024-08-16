@@ -7,7 +7,7 @@ include("backgrounds/background_simple.jl")
 include("plots.jl")
 include("actions.jl")
 
-function Run_Single_String(filename)
+function Run_Single_String(filename) #to be made, still old version
     rmax = 10e1 # is cutoff
 
     # physical parameters
@@ -50,12 +50,10 @@ function Run_Multiple_Strings(filename)
     cons(res, c, I) = (res .= [c[1], c[Int(end/2)], c[Int(end/2)+1], c[end]])
 
     #preinitialization
-    ll=70 #only even to make it work faster
-    Lint=(Array(range(cbrt(0.01),cbrt(0.13),length=50))).^3
+    ll=60 #only even to make it work faster
+    Lint=(Array(range(cbrt(0.01),cbrt(0.10),length=40))).^3
 
     II=1:1:length(Lint)
-    z₀=similar(Lint)
-    r₀=similar(Lint)
     Eint=similar(Lint)
     I = interval(ll,1)
     sols=Array{Float64}(undef,length(Lint),2*length(I))
@@ -68,12 +66,13 @@ function Run_Multiple_Strings(filename)
             global P=PP
             global etast=ee
             create_group(file, "P$(P)_eta$(etast)")
-            Threads.@threads for i in II
+            #Threads.@threads for i in II
+            for i in II
                 # initialization
                 L = Lint[i]
                 I = interval(ll,L)
                 r0 = rmax/10 .* ones(length(I))
-                z0 = etast .* 2* ones(length(I)) #+ 0.1 .* ones(length(I)) - rand(length(I))./10
+                z0 = etast .* ones(length(I)) #+ 0.1 .* ones(length(I)) - rand(length(I))./10
                 c0 = [r0;z0]
                 # optimization
                 eqconst = [rmax, rmax, etast, etast]
@@ -83,8 +82,6 @@ function Run_Multiple_Strings(filename)
                 prob = OptimizationProblem(optprob, c0, I,; lcons = eqconst, ucons = eqconst, lb = lbounds, ub = ubounds)
                 sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
                 sols[i,:] = sol.u
-                r₀[i] = interpolate((I,), sol.u[1:Int(end/2)], Gridded(Linear()))(0)
-                z₀[i] = interpolate((I,), sol.u[Int(end/2)+1:end], Gridded(Linear()))(0)
                 Eint[i] = SNG(sol.u,I)
                 #=  # STRING TO BRANE
                     eta_ext=[etast;fill(P-1,length(I)-2);etast]

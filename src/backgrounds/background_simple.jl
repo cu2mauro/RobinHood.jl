@@ -3,12 +3,12 @@ global μ=0 #for susy
 global q=1 #can be changed
 global rst=cbrt(q) #only if μ=0
 global N=5
-global etast_list=[1]
-global P_list=[5,10,20]
+global etast_list=[2]
+global P_list=[10]
 
 #interval_functions
-ht(t) = 0.5 * (sign(t) + 1);
-iv(t, a, b) = ht(t-a) - ht(t-b);
+ht(t) = 0.5 * (sign(t) + 1)
+iv(t, a, b) = ht(t-a) - ht(t-b)
 
 #EX0 IN PAPER ◯-◯-◯-◯-◯-☐
 α(z) = @. -81 * π^2 * N/6 * (((1-P^2)*z + z^3)*iv(z,0,P-1)+((2P^2-3P+1)*(z-P) + (P-1)*(P-z)^3)*iv(z,P-1,P)) 
@@ -44,5 +44,3 @@ S2(r,z) = @. r^2 / 6
 F(r,z) = @. sqrt(F2(r,z))
 G(r,z) = @. sqrt(G2(r,z))
 S(r,z) = @. sqrt(S2(r,z))
-
-export F2,G2,S2,F,G,S

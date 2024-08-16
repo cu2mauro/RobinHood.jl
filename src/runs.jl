@@ -50,8 +50,8 @@ function Run_Multiple_Strings(filename)
     cons(res, c, I) = (res .= [c[1], c[Int(end/2)], c[Int(end/2)+1], c[end]])
 
     #preinitialization
-    ll=80 #only even to make it work faster
-    Lint=(Array(range(cbrt(0.01),cbrt(0.15),length=50))).^3
+    ll=60 #only even to make it work faster
+    Lint=(Array(range(cbrt(0.01),cbrt(0.15),length=30))).^3
 
     II=1:1:length(Lint)
     z₀=similar(Lint)

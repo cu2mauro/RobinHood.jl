@@ -66,8 +66,7 @@ function Run_Multiple_Strings(filename)
             global P=PP
             global etast=ee
             create_group(file, "P$(P)_eta$(etast)")
-            #Threads.@threads for i in II
-            for i in II
+            Threads.@threads for i in II
                 # initialization
                 L = Lint[i]
                 I = interval(ll,L)

@@ -51,7 +51,7 @@ function Run_Multiple_Strings(filename)
 
     #preinitialization
     ll=60 #only even to make it work faster
-    Lint=(Array(range(cbrt(0.01),cbrt(0.10),length=40))).^3
+    Lint=(Array(range(cbrt(0.001),cbrt(0.08),length=40))).^3
 
     II=1:1:length(Lint)
     Eint=similar(Lint)

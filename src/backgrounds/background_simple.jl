@@ -3,7 +3,7 @@ global μ=0 #for susy
 global q=1 #can be changed
 global rst=cbrt(q) #only if μ=0
 global N=5
-global etast_list=[2]
+global etast_list=[2,4,5,6,8]
 global P_list=[10]
 
 #interval_functions
@@ -11,8 +11,8 @@ ht(t) = 0.5 * (sign(t) + 1)
 iv(t, a, b) = ht(t-a) - ht(t-b)
 
 #EX0 IN PAPER ◯-◯-◯-◯-◯-☐
-α(z) = @. -81 * π^2 * N/6 * (((1-P^2)*z + z^3)*iv(z,0,P-1)+((2P^2-3P+1)*(z-P) + (P-1)*(P-z)^3)*iv(z,P-1,P)) 
-α2(z) = @. -81 * π^2 * N/6 * (6z*iv(z,0,P-1)+(6*(P-1)*(P-z))*iv(z,P-1,P)) 
+#α(z) = @. -81 * π^2 * N/6 * (((1-P^2)*z + z^3)*iv(z,0,P-1)+((2P^2-3P+1)*(z-P) + (P-1)*(P-z)^3)*iv(z,P-1,P)) 
+#α2(z) = @. -81 * π^2 * N/6 * (6z*iv(z,0,P-1)+(6*(P-1)*(P-z))*iv(z,P-1,P)) 
 
 #EX1 IN PAPER ◯-◯-◯-☐-◯-◯-◯
 #α(z) = @. -81 * π^2 * N * (((-P^2)/8*z + z^3/6)*iv(z,0,Int(P/2))+((-P^2)/8*(P-z) + 1/6*(P-z)^3)*iv(z,Int(P/2),P));
@@ -23,8 +23,8 @@ iv(t, a, b) = ht(t-a) - ht(t-b)
 #α2(z) = @. -81 * π^2 * N * z  
 
 #EX3 IN PAPER ☐-◯-◯-◯-◯-◯-☐ 
-#α(z) = @. -81 * π^2 * N * (((1-P)/2*z + z^3/6) * iv(z,0,1)+(1/6 - P/2*z + 1/2*z^2) * iv(z,1,P-1)+((1-P)/2*(P-z) + 1/6*(P-z)^3) * iv(z,P-1,P)) 
-#α2(z) = @. -81 * π^2 * N * (z * iv(z,0,1)+1  * iv(z,1,P-1)+(P-z) * iv(z,P-1,P))
+α(z) = @. -81 * π^2 * N * (((1-P)/2*z + z^3/6) * iv(z,0,1)+(1/6 - P/2*z + 1/2*z^2) * iv(z,1,P-1)+((1-P)/2*(P-z) + 1/6*(P-z)^3) * iv(z,P-1,P)) 
+α2(z) = @. -81 * π^2 * N * (z * iv(z,0,1)+1  * iv(z,1,P-1)+(P-z) * iv(z,P-1,P))
 
 #ex4 ◯-◯-☐-◯-◯-◯-☐-◯-◯ 
 #global kk=4

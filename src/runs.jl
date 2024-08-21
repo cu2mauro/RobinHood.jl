@@ -51,7 +51,7 @@ function Run_Multiple_Strings(filename)
 
     #preinitialization
     ll=60 #only even to make it work faster
-    Lint=(Array(range(cbrt(0.001),cbrt(0.08),length=40))).^3
+    Lint=(Array(range(cbrt(0.001),cbrt(0.07),length=40))).^3
 
     II=1:1:length(Lint)
     Eint=similar(Lint)
@@ -66,6 +66,7 @@ function Run_Multiple_Strings(filename)
             global P=PP
             global etast=ee
             create_group(file, "P$(P)_eta$(etast)")
+            snap_flag=false
             #Threads.@threads for i in II
             for i in II
                 # initialization
@@ -75,16 +76,21 @@ function Run_Multiple_Strings(filename)
                 z0 = etast .* ones(length(I)) #+ 0.1 .* ones(length(I)) - rand(length(I))./10
                 c0 = [r0;z0]
                 # optimization
-                eqconst = [rmax, rmax, etast, etast]
-                lbounds = [fill(rst,length(I));fill(0,length(I))]
-                ubounds = [fill(rmax,length(I));fill(P,length(I))]
-                optprob = OptimizationFunction(SNG, Optimization.AutoReverseDiff(true), cons = cons)
-                prob = OptimizationProblem(optprob, c0, I,; lcons = eqconst, ucons = eqconst, lb = lbounds, ub = ubounds)
-                sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
-                sols[i,:] = sol.u
-                Eint[i] = SNG(sol.u,I)
-                #=  # STRING TO BRANE
-                    eta_ext=[etast;fill(P-1,length(I)-2);etast]
+                if snap_flag==false
+                    eqconst = [rmax, rmax, etast, etast]
+                    lbounds = [fill(rst,length(I));fill(0,length(I))]
+                    ubounds = [fill(rmax,length(I));fill(P,length(I))]
+                    optprob = OptimizationFunction(SNG, Optimization.AutoReverseDiff(true), cons = cons)
+                    prob = OptimizationProblem(optprob, c0, I,; lcons = eqconst, ucons = eqconst, lb = lbounds, ub = ubounds)
+                    sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
+                    sols[i,:] = sol.u
+                    Eint[i] = SNG(sol.u,I)
+                    if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15
+                        snap_flag=true
+                    end
+                end
+                if snap_flag==true
+                    eta_ext=[etast;fill(P/2,length(I)-2);etast]
                     # second optimization
                     eqconst2 = [rmax, rmax]
                     lbounds2 = fill(rst,length(I))
@@ -93,8 +99,10 @@ function Run_Multiple_Strings(filename)
                     SNG2(r, I) = action([r;eta_ext], I)
                     optprob2 = OptimizationFunction(SNG2, Optimization.AutoReverseDiff(true), cons = cons2)
                     prob2 = OptimizationProblem(optprob2, r0, I,; lcons = eqconst2, ucons = eqconst2, lb = lbounds2, ub = ubounds2)
-                    sol2 = solve(prob2, IPNewton());
-                    Eint2[i] = SNG2(sol2.u,I) =#
+                    sol2 = solve(prob2, IPNewton())
+                    sols[i,:] = [sol2.u;eta_ext]
+                    Eint[i] = SNG2(sol2.u,I)
+                end
             end
         file["P$(P)_eta$(etast)/Eint"]=Eint
         file["P$(P)_eta$(etast)/sols"]=sols

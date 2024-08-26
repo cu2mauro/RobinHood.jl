@@ -85,9 +85,9 @@ function Run_Multiple_Strings(filename)
                     sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
                     Eint[i] = SNG(sol.u,I)
-                    if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15
-                        snap_flag=true
-                    end
+                    #if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15
+                    #    snap_flag=true
+                    #end
                 end
                 if snap_flag==true
                     eta_ext=[etast;fill(P/2,length(I)-2);etast]

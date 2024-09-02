@@ -1,7 +1,7 @@
 using Interpolations
 using NaNMath
 
-include("backgrounds/background_simple.jl")
+#include("backgrounds/background_simple.jl")
 
 function lagrangian(x,r,rx,z,zx)
     L = @. NaNMath.sqrt(F2(r,z) + G2(r,z) * rx^2 + S2(r,z) * zx^2)                                          

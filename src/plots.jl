@@ -1,16 +1,7 @@
 using Plots
 using HDF5
 
-include("backgrounds/background_simple.jl")
-
-function interval(N::Int,L)
-    I=Vector{Float64}(undef, 2N-1)
-    I=sqrt.(Array(range(0,(L/2)^2,length=N)))
-    I=[-I[end:-1:1];I]
-    filter!(e->hash(e)!=hash(-0.0),I)
-    return I
-end
-export interval
+#include("backgrounds/background_simple.jl")
 
 function Z0_Plot(filename,P,etast)
     file = h5open("results/"*filename,"r")

@@ -3,9 +3,9 @@ using Interpolations
 using Base.Threads
 using HDF5
 
-include("backgrounds/background_simple.jl")
-include("plots.jl")
-include("actions.jl")
+#include("backgrounds/background_simple.jl")
+#include("plots.jl")
+#include("actions.jl")
 
 function Run_Single_String(filename) #to be made, still old version
     rmax = 10e1 # is cutoff

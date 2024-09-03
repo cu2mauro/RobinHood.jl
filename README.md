@@ -1,6 +1,6 @@
 # RobinHood
 
-[![Build Status](https://github.com/cu2mauro/RobinHood.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/cu2mauro/RobinHood.jl/actions)
+[![Build Status](https://github.com/cu2mauro/RobinHood.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/cu2mauro/RobinHood.jl/actions) [![DOI](https://zenodo.org/badge/842631903.svg)](https://zenodo.org/doi/10.5281/zenodo.13646854)
 
 RobinHood uses numerical optimization with [Julia](https://julialang.org) to solve the Nambu-Goto holographic Wilson loops with various quivers. Specifying their rank function in a supergravity background, for each quiver it investigates confinement and screening of the theory.
 

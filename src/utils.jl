@@ -3,6 +3,7 @@ function CreateConfigFile(path)
     println(io,"
         using RobinHood\n\n
         filename=\"quiver_of_choice\"\n\n
+        Quiver_choice(n) #use a quiver label among 1,2,3\n\n
         Run_Multiple_Strings(filename)
     ")
     close(io)

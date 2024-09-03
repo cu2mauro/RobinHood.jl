@@ -2,8 +2,7 @@
 
 [![Build Status](https://github.com/cu2mauro/RobinHood.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/cu2mauro/RobinHood.jl/actions)
 
-From various quivers of rank functions in supergravity backgrounds, use numerical optimization with Julia to solve the Nambu-Goto Wilson Loop and investigate confinement and screening
-
+RobinHood uses numerical optimization with [Julia](https://julialang.org) to solve the Nambu-Goto holographic Wilson loops with various quivers. Specifying their rank function in a supergravity background, for each quiver it investigates confinement and screening of the theory.
 
 ## Installing
 

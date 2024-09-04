@@ -33,7 +33,7 @@ function Run_Single_String(filename) #to be made, still old version
 end
 export Run_Single_String
 
-function Run_Multiple_Strings(filename)
+function Run_Multiple_Strings(filename,P_list,zstar_list)
 
     snapping=false
     file = h5open("results/"*filename,"w")

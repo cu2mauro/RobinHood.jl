@@ -9,7 +9,7 @@ global P_list=[] #list of values of P
 filename=\"quiver_of_choice\" #the name for the .h5 data file that will be created
 Quiver_choice(n) #use a quiver label among 1,2,3
 
-Run_Multiple_Strings(filename)")
+Run_Multiple_Strings(filename,P_list,zstar_list,N)")
     close(io)
 end
 
@@ -25,7 +25,7 @@ global P_list=[] #list of values of P
 filename=\"quiver_of_choice\" #the name for the .h5 data file that will be created
 Quiver_choice(n) #use a quiver label among 1,2,3
 
-Run_Multiple_Strings(filename)")
+Run_Multiple_Strings(filename,P_list,zstar_list,N)")
     close(io)
 end
 

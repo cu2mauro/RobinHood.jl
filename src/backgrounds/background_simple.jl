@@ -29,6 +29,8 @@ function Quiver_choice(quiverlabel)
         return
     end
 
+    export Quiver_choice
+
     
     #ex not in paper ◯-◯-◯-◯-◯-◯-◯-◯
     #α(z) = @. -27/2 * π^2 * N * (z^3 - P*(P+2)*z) 

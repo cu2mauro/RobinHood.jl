@@ -2,7 +2,6 @@
 global μ=0 #for susy
 global q=1 #can be changed
 global rst=cbrt(q) #only if μ=0
-global etast_list=ztar_list
 
 #interval_functions
 ht(t) = 0.5 * (sign(t) + 1)

@@ -1,22 +1,8 @@
-using Plots
-using HDF5
-
-include("backgrounds/background_simple.jl")
-
-function interval(N::Int,L)
-    I=Vector{Float64}(undef, 2N-1)
-    I=sqrt.(Array(range(0,(L/2)^2,length=N)))
-    I=[-I[end:-1:1];I]
-    filter!(e->hash(e)!=hash(-0.0),I)
-    return I
-end
-export interval
-
-function Z0_Plot(filename,P,etast)
+function Z0_Plot(filename,P,zstar)
     file = h5open("results/"*filename,"r")
-    Eint=read(file["P$(P)_eta$(etast)/Eint"])
-    sols=read(file["P$(P)_eta$(etast)/sols"])
-    Lint=read(file["P$(P)_eta$(etast)/Lint"])
+    Eint=read(file["P$(P)_z$(zstar)/Eint"])
+    sols=read(file["P$(P)_z$(zstar)/sols"])
+    Lint=read(file["P$(P)_z$(zstar)/Lint"])
 
     z₀ = sols[:,Int(end*3/4+0.5)]
 
@@ -25,11 +11,11 @@ function Z0_Plot(filename,P,etast)
 end
 export Z0_Plot
 
-function R0_Plot(filename,P,etast)
+function R0_Plot(filename,P,zstar)
     file = h5open("results/"*filename,"r")
-    Eint=read(file["P$(P)_eta$(etast)/Eint"])
-    sols=read(file["P$(P)_eta$(etast)/sols"])
-    Lint=read(file["P$(P)_eta$(etast)/Lint"])
+    Eint=read(file["P$(P)_z$(zstar)/Eint"])
+    sols=read(file["P$(P)_z$(zstar)/sols"])
+    Lint=read(file["P$(P)_z$(zstar)/Lint"])
 
     r₀ = sols[:,Int(end/4+.5)]
 
@@ -38,13 +24,13 @@ function R0_Plot(filename,P,etast)
 end
 export R0_Plot
 
-function LE_Plot(filename,P,etast)
+function LE_Plot(filename,P,zstar)
     p=plot(dpi=500)
     file = h5open("results/"*filename,"r")
-    Eint=read(file["P$(P)_eta$(etast)/Eint"])
-    Lint=read(file["P$(P)_eta$(etast)/Lint"])
+    Eint=read(file["P$(P)_z$(zstar)/Eint"])
+    Lint=read(file["P$(P)_z$(zstar)/Lint"])
     
-    p=plot!(Lint, Eint, label="P=$(P), z*=$(etast)", xlabel="L", ylabel="E", lw=3,dpi=500)
+    p=plot!(Lint, Eint, label="P=$(P), z*=$(zstar)", xlabel="L", ylabel="E", lw=3,dpi=500)
     close(file)
     plot!(dpi=500)
 end
@@ -53,13 +39,13 @@ function LE_Plot(filename)
     file = h5open("results/"*filename,"r")
 
     P_list=read(file["P_list"])
-    etast_list=read(file["etast_list"])
+    zstar_list=read(file["zstar_list"])
 
     for P in P_list
-        for etast in etast_list
-            Eint=read(file["P$(P)_eta$(etast)/Eint"])
-            Lint=read(file["P$(P)_eta$(etast)/Lint"])
-            p=plot!(Lint, Eint, label="P=$(P), z*=$(etast)", xlabel="L", ylabel="E", lw=3,dpi=500)
+        for zstar in zstar_list
+            Eint=read(file["P$(P)_z$(zstar)/Eint"])
+            Lint=read(file["P$(P)_z$(zstar)/Lint"])
+            p=plot!(Lint, Eint, label="P=$(P), z*=$(zstar)", xlabel="L", ylabel="E", lw=3,dpi=500)
         end
     end
     close(file)
@@ -67,42 +53,42 @@ function LE_Plot(filename)
 end
 export LE_Plot
 
-function String_Plot(filename,P,etast,i)
+function String_Plot(filename,P,zstar,i)
     p=plot()
     file = h5open("results/"*filename,"r")
 
-    Eint=read(file["P$(P)_eta$(etast)/Eint"])
-    sols=read(file["P$(P)_eta$(etast)/sols"])
-    Lint=read(file["P$(P)_eta$(etast)/Lint"])
+    Eint=read(file["P$(P)_z$(zstar)/Eint"])
+    sols=read(file["P$(P)_z$(zstar)/sols"])
+    Lint=read(file["P$(P)_z$(zstar)/Lint"])
     p=plot!(sols[i,Int(end/2)+1:end],interval(Int(size(sols,2)/4+0.5),Lint[i]), ylabel="x",xlabel="z",label="",dpi=500)
     close(file)
-    plot!(title="P=$(P), z*=$(etast)",dpi=500)
+    plot!(title="P=$(P), z*=$(zstar)",dpi=500)
 end
-function String_Plot(filename,P,etast)
+function String_Plot(filename,P,zstar)
     p=plot()
     file = h5open("results/"*filename,"r")
 
-    Eint=read(file["P$(P)_eta$(etast)/Eint"])
-    sols=read(file["P$(P)_eta$(etast)/sols"])
-    Lint=read(file["P$(P)_eta$(etast)/Lint"])
+    Eint=read(file["P$(P)_z$(zstar)/Eint"])
+    sols=read(file["P$(P)_z$(zstar)/sols"])
+    Lint=read(file["P$(P)_z$(zstar)/Lint"])
     for i in 1:1:length(Lint)
         p=plot!(sols[i,Int(end/2)+1:end],interval(Int(size(sols,2)/4+0.5),Lint[i]), ylabel="x",xlabel="z",label="",dpi=500)
     end
     close(file)
-    plot!(title="P=$(P), z*=$(etast)",dpi=500)
+    plot!(title="P=$(P), z*=$(zstar)",dpi=500)
 end
 function String_Plot(filename)
     p=plot(dpi=500)
     file = h5open("results/"*filename,"r")
 
     P_list=read(file["P_list"])
-    etast_list=read(file["etast_list"])
+    zstar_list=read(file["zstar_list"])
 
     for P in P_list
-        for etast in etast_list
-            Eint=read(file["P$(P)_eta$(etast)/Eint"])
-            sols=read(file["P$(P)_eta$(etast)/sols"])
-            Lint=read(file["P$(P)_eta$(etast)/Lint"])
+        for zstar in zstar_list
+            Eint=read(file["P$(P)_z$(zstar)/Eint"])
+            sols=read(file["P$(P)_z$(zstar)/sols"])
+            Lint=read(file["P$(P)_z$(zstar)/Lint"])
             for i in 1:1:length(Lint)
                 p=plot!(sols[i,Int(end/2)+1:end],interval(Int(size(sols,2)/4+0.5),Lint[i]), ylabel="x",xlabel="z",label="",dpi=500)
             end
@@ -113,28 +99,28 @@ function String_Plot(filename)
 end
 export String_Plot
 
-function String_3DPlot(filename,P,etast,i)
+function String_3DPlot(filename,P,zstar,i)
     p=plot()
     file = h5open("results/"*filename,"r")
 
-    Eint=read(file["P$(P)_eta$(etast)/Eint"])
-    sols=read(file["P$(P)_eta$(etast)/sols"])
-    Lint=read(file["P$(P)_eta$(etast)/Lint"])
+    Eint=read(file["P$(P)_z$(zstar)/Eint"])
+    sols=read(file["P$(P)_z$(zstar)/sols"])
+    Lint=read(file["P$(P)_z$(zstar)/Lint"])
     p=plot!(sols[i,Int(end/2)+1:end],sols[i,1:Int(end/2)],interval(Int(size(sols,2)/4+0.5),Lint[i]), ylabel="r",xlabel="z",zlabel="x",label="",dpi=500)
     close(file)
-    plot!(title="P=$(P), z*=$(etast)",dpi=500)
+    plot!(title="P=$(P), z*=$(zstar)",dpi=500)
 end
-function String_3DPlot(filename,P,etast)
+function String_3DPlot(filename,P,zstar)
     p=plot()
     file = h5open("results/"*filename,"r")
 
-    Eint=read(file["P$(P)_eta$(etast)/Eint"])
-    sols=read(file["P$(P)_eta$(etast)/sols"])
-    Lint=read(file["P$(P)_eta$(etast)/Lint"])
+    Eint=read(file["P$(P)_z$(zstar)/Eint"])
+    sols=read(file["P$(P)_z$(zstar)/sols"])
+    Lint=read(file["P$(P)_z$(zstar)/Lint"])
     for i in 1:1:length(Lint)
         p=plot!(sols[i,Int(end/2)+1:end],sols[i,1:Int(end/2)],interval(Int(size(sols,2)/4+0.5),Lint[i]), ylabel="r",xlabel="z",zlabel="x",label="",dpi=500)
     end
     close(file)
-    plot!(title="P=$(P), z*=$(etast)",dpi=500)
+    plot!(title="P=$(P), z*=$(zstar)",dpi=500)
 end
 export String_3DPlot

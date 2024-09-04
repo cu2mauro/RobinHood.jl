@@ -9,6 +9,8 @@ RobinHood uses numerical optimization with [Julia](https://julialang.org) to sol
 This package is not in the registry. You can install it by specifying the URL to the repository:
 
 ```julia
+julia> ] #enter package mode
+
 pkg> add https://github.com/cu2mauro/RobinHood.jl/
 
 julia> using RobinHood
@@ -16,4 +18,4 @@ julia> using RobinHood
 
 ## Usage
 
-To use this Julia package, first navigate to the local installation `cd("./RobinHood.jl")`. Then select the quiver in the `src/backgrounds` folder, and `include("config_file.jl")`.
+To use this Julia package, first create a config file with the command `CreateConfigFile()`. Then modify it, selecting the parameters and the quiver of choice, and run `include("config_file.jl")`.

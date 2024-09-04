@@ -28,6 +28,7 @@ function Quiver_choice(quiverlabel)
         error("Please choose a good quiver label.")
         return
     end
+
     
     #ex not in paper ◯-◯-◯-◯-◯-◯-◯-◯
     #α(z) = @. -27/2 * π^2 * N * (z^3 - P*(P+2)*z) 

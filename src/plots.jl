@@ -1,8 +1,3 @@
-using Plots
-using HDF5
-
-#include("backgrounds/background_simple.jl")
-
 function Z0_Plot(filename,P,etast)
     file = h5open("results/"*filename,"r")
     Eint=read(file["P$(P)_eta$(etast)/Eint"])

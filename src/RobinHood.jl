@@ -4,6 +4,7 @@ using OptimizationOptimJL, ReverseDiff
 using Interpolations
 using NaNMath
 using Base.Threads
+using Plots
 using HDF5
 
 include("backgrounds/background_simple.jl")

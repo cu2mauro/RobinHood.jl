@@ -2,9 +2,7 @@
 global μ=0 #for susy
 global q=1 #can be changed
 global rst=cbrt(q) #only if μ=0
-global N=5
-global etast_list=[2,4,5,6,8]
-global P_list=[10]
+global etast_list=ztar_list
 
 #interval_functions
 ht(t) = 0.5 * (sign(t) + 1)

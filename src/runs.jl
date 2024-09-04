@@ -1,14 +1,5 @@
-using OptimizationOptimJL, ReverseDiff
-using Interpolations
-using Base.Threads
-using HDF5
-
-#include("backgrounds/background_simple.jl")
-#include("plots.jl")
-#include("actions.jl")
-
 function Run_Single_String(filename) #to be made, still old version
-    rmax = 10e1 # is cutoff
+    #=rmax = 10e1 # is cutoff
 
     # physical parameters
     L = 0.13
@@ -38,11 +29,13 @@ function Run_Single_String(filename) #to be made, still old version
     z₀=interpolate((I,), sol.u[Int(end/2)+1:end], Gridded(Linear()))(0)
     println("The value of r₀ is ", r₀,".")
     plot(plot(I,sol.u[1:Int(end/2)], ylabel="r", lc=:blue, xlabel="x", label=""),plot!(I,fill(r₀,length(I)), label="r₀", lc=:blue, xlabel="x", ls=:dot),
-    plot(I,sol.u[Int(end/2)+1:end], ylabel="z", lc=:red,xlabel="x", label=""),plot!(I,fill(z₀,length(I)), label="z₀", lc=:red, xlabel="x", ls=:dot),plot_title="L=$(L)")
+    plot(I,sol.u[Int(end/2)+1:end], ylabel="z", lc=:red,xlabel="x", label=""),plot!(I,fill(z₀,length(I)), label="z₀", lc=:red, xlabel="x", ls=:dot),plot_title="L=$(L)") =#
 end
 export Run_Single_String
 
 function Run_Multiple_Strings(filename)
+
+    snapping == false
     file = h5open("results/"*filename,"w")
     println("\nData file named ",filename,".h5 was created.")
     rmax = 8e1 # is cutoff
@@ -85,9 +78,9 @@ function Run_Multiple_Strings(filename)
                     sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
                     Eint[i] = SNG(sol.u,I)
-                    #if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15
-                    #    snap_flag=true
-                    #end
+                    if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15 & snapping==true
+                        snap_flag=true
+                    end
                 end
                 if snap_flag==true
                     eta_ext=[etast;fill(P/2,length(I)-2);etast]

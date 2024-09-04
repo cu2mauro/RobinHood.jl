@@ -78,7 +78,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                     sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
                     Eint[i] = SNG(sol.u,I)
-                    if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15 & snapping==true
+                    if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15 && snapping==true
                         snap_flag=true
                     end
                 end

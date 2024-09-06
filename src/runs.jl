@@ -36,6 +36,8 @@ export Run_Single_String
 function Run_Multiple_Strings(filename,P_list,zstar_list)
 
     snapping=false
+    P=0
+    zstar=0
     file = h5open("results/"*filename,"w")
     println("\nData file named ",filename,".h5 was created.")
     rmax = 8e1 # is cutoff

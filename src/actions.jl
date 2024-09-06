@@ -1,10 +1,10 @@
-function lagrangian(x,r,rx,z,zx)
-    L = @. NaNMath.sqrt(F2(r,z) + G2(r,z) * rx^2 + S2(r,z) * zx^2)                                          
+function lagrangian(x,r,rx,z,zx,P)
+    L = @. NaNMath.sqrt(F2(r,z,P) + G2(r,z,P) * rx^2 + S2(r,z) * zx^2)                                          
 	return L
 end
 export lagrangian
 
-function action(c,I)
+function action(c,I,P)
     hh=[I[2:1:end];0]-I
     pop!(hh)
     r=c[1:Int(length(c)/2)]
@@ -14,7 +14,7 @@ function action(c,I)
     rx=diff(r)./hh
     zs=interpolate((I,), z, Gridded(Linear()))(bx)
     zx=diff(z)./hh
-    Lag=lagrangian(bx,rs,rx,zs,zx)
+    Lag=lagrangian(bx,rs,rx,zs,zx,P)
     S=sum(hh .* Lag)
     return S
 end

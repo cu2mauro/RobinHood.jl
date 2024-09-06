@@ -55,12 +55,12 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
     file["P_list"]=P_list[:]
     file["zstar_list"]=zstar_list[:]
     for PP in P_list
-        for zz in zstar_list
+        Threads.@threads for zz in zstar_list
             global P=PP
             global zstar=zz
             create_group(file, "P$(P)_z$(zstar)")
             snap_flag=false
-            Threads.@threads for i in II
+            for i in II
                 # initialization
                 L = Lint[i]
                 I = interval(ll,L)

@@ -57,8 +57,6 @@ function Quiver_choice(quiverlabel)
     @eval S2(r,z) = @. r^2 / 6
     @eval F(r,z,P) = @. sqrt(F2(r,z,P))
     @eval G(r,z,P) = @. sqrt(G2(r,z,P))
-    @eval F(r,z,P) = @. sqrt(F2(r,z,P))
-    @eval G(r,z,P) = @. sqrt(G2(r,z,P))
     @eval S(r,z) = @. sqrt(S2(r,z))
     return
 end

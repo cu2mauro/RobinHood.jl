@@ -53,18 +53,16 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
     println("\nGetting started with the loop now.")
     file["P_list"]=P_list[:]
     file["zstar_list"]=zstar_list[:]
-    for PP in P_list
-        Threads.@threads for zz in zstar_list
-            P=PP
-            zstar=zz
+    for P in P_list
+        Threads.@threads for zstar in zstar_list
             create_group(file, "P$(P)_z$(zstar)")
-            SNG(c, I) = action(c, I, P)
-            cons(res, c, I) = (res .= [c[1], c[Int(end/2)], c[Int(end/2)+1], c[end]])
             snap_flag=false
             for i in II
                 # initialization
                 L = Lint[i]
                 I = interval(ll,L)
+                SNG(c, I) = action(c, I, P)
+                cons(res, c, I) = (res .= [c[1], c[Int(end/2)], c[Int(end/2)+1], c[end]])
                 r0 = rmax/10 .* ones(length(I))
                 z0 = zstar .* ones(length(I)) #+ 0.1 .* ones(length(I)) - rand(length(I))./10
                 c0 = [r0;z0]

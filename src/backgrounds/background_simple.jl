@@ -1,8 +1,7 @@
 #constants
-global μ=0 #for susy
-global q=1 #can be changed
-global rst=cbrt(q) #only if μ=0
-global N=5
+μ=0 #for susy
+q=1 #can be changed
+N=5
 
 #interval_functions
 ht(t) = 0.5 * (sign(t) + 1)
@@ -12,18 +11,18 @@ function Quiver_choice(quiverlabel)
 
     if quiverlabel == 1
         #EX1 IN PAPER ◯-◯-◯-◯-◯-☐
-        @eval α(z) = @. -81 * π^2 * N/6 * (((1-P^2)*z + z^3)*iv(z,0,P-1)+((2P^2-3P+1)*(z-P) + (P-1)*(P-z)^3)*iv(z,P-1,P)) 
-        @eval α2(z) = @. -81 * π^2 * N/6 * (6z*iv(z,0,P-1)+(6*(P-1)*(P-z))*iv(z,P-1,P)) 
+        @eval α(z,P) = @. -81 * π^2 * N/6 * (((1-P^2)*z + z^3)*iv(z,0,P-1)+((2P^2-3P+1)*(z-P) + (P-1)*(P-z)^3)*iv(z,P-1,P)) 
+        @eval α2(z,P) = @. -81 * π^2 * N/6 * (6z*iv(z,0,P-1)+(6*(P-1)*(P-z))*iv(z,P-1,P)) 
 
     elseif quiverlabel == 2
         #EX2 IN PAPER ◯-◯-◯-☐-◯-◯-◯
-        @eval α(z) = @. -81 * π^2 * N * (((-P^2)/8*z + z^3/6)*iv(z,0,Int(P/2))+((-P^2)/8*(P-z) + 1/6*(P-z)^3)*iv(z,Int(P/2),P));
-        @eval α2(z) = @. -81 * π^2 * N * (z*iv(z,0,Int(P/2))+(P-z)*iv(z,Int(P/2),P));
+        @eval α(z,P) = @. -81 * π^2 * N * (((-P^2)/8*z + z^3/6)*iv(z,0,Int(P/2))+((-P^2)/8*(P-z) + 1/6*(P-z)^3)*iv(z,Int(P/2),P));
+        @eval α2(z,P) = @. -81 * π^2 * N * (z*iv(z,0,Int(P/2))+(P-z)*iv(z,Int(P/2),P));
 
     elseif quiverlabel == 3
         #EX3 IN PAPER ☐-◯-◯-◯-◯-◯-☐ 
-        @eval α(z) = @. -81 * π^2 * N * (((1-P)/2*z + z^3/6) * iv(z,0,1)+(1/6 - P/2*z + 1/2*z^2) * iv(z,1,P-1)+((1-P)/2*(P-z) + 1/6*(P-z)^3) * iv(z,P-1,P)) 
-        @eval α2(z) = @. -81 * π^2 * N * (z * iv(z,0,1)+1  * iv(z,1,P-1)+(P-z) * iv(z,P-1,P))
+        @eval α(z,P) = @. -81 * π^2 * N * (((1-P)/2*z + z^3/6) * iv(z,0,1)+(1/6 - P/2*z + 1/2*z^2) * iv(z,1,P-1)+((1-P)/2*(P-z) + 1/6*(P-z)^3) * iv(z,P-1,P)) 
+        @eval α2(z,P) = @. -81 * π^2 * N * (z * iv(z,0,1)+1  * iv(z,1,P-1)+(P-z) * iv(z,P-1,P))
 
     else
         error("Please choose a good quiver label.")
@@ -47,11 +46,11 @@ function Quiver_choice(quiverlabel)
 
     #action_functions
     @eval f(r) = @. (1 - μ/r^4 - q^2/r^6)
-    @eval F2(r,z) = @. - (α(z)/α2(z)) * r^4
-    @eval G2(r,z) = @. - α(z) / (α2(z)*f(r))
+    @eval F2(r,z,P) = @. - (α(z)/α2(z)) * r^4
+    @eval G2(r,z,P) = @. - α(z) / (α2(z)*f(r))
     @eval S2(r,z) = @. r^2 / 6
-    @eval F(r,z) = @. sqrt(F2(r,z))
-    @eval G(r,z) = @. sqrt(G2(r,z))
+    @eval F(r,z,P) = @. sqrt(F2(r,z,P))
+    @eval G(r,z,P) = @. sqrt(G2(r,z,P))
     @eval S(r,z) = @. sqrt(S2(r,z))
     return
 end

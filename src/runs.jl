@@ -36,13 +36,10 @@ export Run_Single_String
 function Run_Multiple_Strings(filename,P_list,zstar_list)
 
     snapping=false
-    P=0
-    zstar=0
+    rst=1
     file = h5open("results/"*filename,"w")
     println("\nData file named ",filename,".h5 was created.")
     rmax = 8e1 # is cutoff
-    SNG(c, I) = action(c, I)
-    cons(res, c, I) = (res .= [c[1], c[Int(end/2)], c[Int(end/2)+1], c[end]])
 
     #preinitialization
     ll=60 #only even to make it work faster
@@ -61,6 +58,8 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
             P=PP
             zstar=zz
             create_group(file, "P$(P)_z$(zstar)")
+            SNG(c, I) = action(c, I, P)
+            cons(res, c, I) = (res .= [c[1], c[Int(end/2)], c[Int(end/2)+1], c[end]])
             snap_flag=false
             for i in II
                 # initialization
@@ -90,7 +89,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                     lbounds2 = fill(rst,length(I))
                     ubounds2 = fill(rmax,length(I))
                     cons2(res, r, I) = (res .= [r[1], r[end]])
-                    SNG2(r, I) = action([r;z_ext], I)
+                    SNG2(r, I) = action([r;z_ext], I,P)
                     optprob2 = OptimizationFunction(SNG2, Optimization.AutoReverseDiff(true), cons = cons2)
                     prob2 = OptimizationProblem(optprob2, r0, I,; lcons = eqconst2, ucons = eqconst2, lb = lbounds2, ub = ubounds2)
                     sol2 = solve(prob2, IPNewton())

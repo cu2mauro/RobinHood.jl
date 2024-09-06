@@ -61,7 +61,6 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
             create_group(file, "P$(P)_z$(zstar)")
             snap_flag=false
             Threads.@threads for i in II
-            for i in II
                 # initialization
                 L = Lint[i]
                 I = interval(ll,L)

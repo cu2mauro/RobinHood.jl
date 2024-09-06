@@ -10,6 +10,8 @@ Quiver_choice(n) #use a quiver label among 1,2,3
 
 Run_Multiple_Strings(filename,P_list,zstar_list)")
     close(io)
+    mkpath("./results")
+    return
 end
 
 function CreateConfigFile()
@@ -25,6 +27,8 @@ Quiver_choice(n) #use a quiver label among 1,2,3
 
 Run_Multiple_Strings(filename,P_list,zstar_list)")
     close(io)
+    mkpath("./results")
+    return
 end
 
 export CreateConfigFile

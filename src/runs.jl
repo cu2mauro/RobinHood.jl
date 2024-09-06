@@ -72,7 +72,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                     eqconst = [rmax, rmax, zstar, zstar]
                     lbounds = [fill(rst,length(I));fill(0,length(I))]
                     ubounds = [fill(rmax,length(I));fill(P,length(I))]
-                    optprob = OptimizationFunction(SNG, Optimization.AutoReverseDiff(), cons = cons)
+                    optprob = OptimizationFunction(SNG, Optimization.AutoReverseDiff(true), cons = cons)
                     prob = OptimizationProblem(optprob, c0, I,; lcons = eqconst, ucons = eqconst, lb = lbounds, ub = ubounds)
                     sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
@@ -89,7 +89,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                     ubounds2 = fill(rmax,length(I))
                     cons2(res, r, I) = (res .= [r[1], r[end]])
                     SNG2(r, I) = action([r;z_ext], I)
-                    optprob2 = OptimizationFunction(SNG2, Optimization.AutoReverseDiff(), cons = cons2)
+                    optprob2 = OptimizationFunction(SNG2, Optimization.AutoReverseDiff(true), cons = cons2)
                     prob2 = OptimizationProblem(optprob2, r0, I,; lcons = eqconst2, ucons = eqconst2, lb = lbounds2, ub = ubounds2)
                     sol2 = solve(prob2, IPNewton())
                     sols[i,:] = [sol2.u;z_ext]

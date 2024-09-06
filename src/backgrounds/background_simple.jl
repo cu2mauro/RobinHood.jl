@@ -13,14 +13,20 @@ function Quiver_choice(quiverlabel)
         #EX1 IN PAPER ◯-◯-◯-◯-◯-☐
         @eval α(z,P) = @. -81 * π^2 * N/6 * (((1-P^2)*z + z^3)*iv(z,0,P-1)+((2P^2-3P+1)*(z-P) + (P-1)*(P-z)^3)*iv(z,P-1,P)) 
         @eval α2(z,P) = @. -81 * π^2 * N/6 * (6z*iv(z,0,P-1)+(6*(P-1)*(P-z))*iv(z,P-1,P)) 
+        @eval α(z,P) = @. -81 * π^2 * N/6 * (((1-P^2)*z + z^3)*iv(z,0,P-1)+((2P^2-3P+1)*(z-P) + (P-1)*(P-z)^3)*iv(z,P-1,P)) 
+        @eval α2(z,P) = @. -81 * π^2 * N/6 * (6z*iv(z,0,P-1)+(6*(P-1)*(P-z))*iv(z,P-1,P)) 
 
     elseif quiverlabel == 2
         #EX2 IN PAPER ◯-◯-◯-☐-◯-◯-◯
         @eval α(z,P) = @. -81 * π^2 * N * (((-P^2)/8*z + z^3/6)*iv(z,0,Int(P/2))+((-P^2)/8*(P-z) + 1/6*(P-z)^3)*iv(z,Int(P/2),P));
         @eval α2(z,P) = @. -81 * π^2 * N * (z*iv(z,0,Int(P/2))+(P-z)*iv(z,Int(P/2),P));
+        @eval α(z,P) = @. -81 * π^2 * N * (((-P^2)/8*z + z^3/6)*iv(z,0,Int(P/2))+((-P^2)/8*(P-z) + 1/6*(P-z)^3)*iv(z,Int(P/2),P));
+        @eval α2(z,P) = @. -81 * π^2 * N * (z*iv(z,0,Int(P/2))+(P-z)*iv(z,Int(P/2),P));
 
     elseif quiverlabel == 3
         #EX3 IN PAPER ☐-◯-◯-◯-◯-◯-☐ 
+        @eval α(z,P) = @. -81 * π^2 * N * (((1-P)/2*z + z^3/6) * iv(z,0,1)+(1/6 - P/2*z + 1/2*z^2) * iv(z,1,P-1)+((1-P)/2*(P-z) + 1/6*(P-z)^3) * iv(z,P-1,P)) 
+        @eval α2(z,P) = @. -81 * π^2 * N * (z * iv(z,0,1)+1  * iv(z,1,P-1)+(P-z) * iv(z,P-1,P))
         @eval α(z,P) = @. -81 * π^2 * N * (((1-P)/2*z + z^3/6) * iv(z,0,1)+(1/6 - P/2*z + 1/2*z^2) * iv(z,1,P-1)+((1-P)/2*(P-z) + 1/6*(P-z)^3) * iv(z,P-1,P)) 
         @eval α2(z,P) = @. -81 * π^2 * N * (z * iv(z,0,1)+1  * iv(z,1,P-1)+(P-z) * iv(z,P-1,P))
 
@@ -49,6 +55,8 @@ function Quiver_choice(quiverlabel)
     @eval F2(r,z,P) = @. - (α(z,P)/α2(z,P)) * r^4
     @eval G2(r,z,P) = @. - α(z,P) / (α2(z,P)*f(r))
     @eval S2(r,z) = @. r^2 / 6
+    @eval F(r,z,P) = @. sqrt(F2(r,z,P))
+    @eval G(r,z,P) = @. sqrt(G2(r,z,P))
     @eval F(r,z,P) = @. sqrt(F2(r,z,P))
     @eval G(r,z,P) = @. sqrt(G2(r,z,P))
     @eval S(r,z) = @. sqrt(S2(r,z))

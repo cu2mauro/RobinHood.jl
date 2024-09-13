@@ -19,3 +19,9 @@ julia> using RobinHood
 ## Usage
 
 To use this Julia package, first create a config file with the command `CreateConfigFile()`. Then modify it, selecting the parameters and the quiver of choice, and run `include("config_file.jl")`.
+
+## Plotting
+
+To plot and analyze the results produced and stored in the `results` folder, there are two ways. 
+Using Julia, there are various commands inside the `plots.jl` file: `String_Plot(...)`, `LE_Plot(...)` among others, with various argument specifications. 
+Using Mathematica, via the `Import_to_Mathematica.nb` file.

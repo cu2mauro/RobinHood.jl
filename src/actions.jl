@@ -1,30 +1,38 @@
-function lagrangian(x,r,rx,z,zx)
-    L = @. NaNMath.sqrt(F2(r,z) + G2(r,z) * rx^2 + S2(r,z) * zx^2)                                          
+function lagrangian(s,x,xs,r,rs,z,zs)
+    L = @. NaNMath.sqrt(F2(r,z) * xs^2 + G2(r,z) * rs^2 + S2(r,z) * zs^2)                                          
 	return L
 end
 export lagrangian
 
-function action(c,I)
-    hh=[I[2:1:end];0]-I
+function action(c,ss,KV)
+    #now c is control points
+    cmat=reshape(c,(3,length(c)/3))
+    cm=Array{MVector{3,Float64}}(undef,length(c))
+    for i in 1:length(c)
+        cm[i]=MVector{3}(cmat[:,i])
+    end
+    M=BSplineManifold(cm,KV)
+    hh=[ss[2:1:end];0]-ss
     pop!(hh)
-    r=c[1:Int(length(c)/2)]
-    z=c[Int(length(c)/2+1):end]
-    bx=I[1:length(hh)]+hh./2
-    rs=interpolate((I,), r, Gridded(Linear()))(bx)
-    rx=diff(r)./hh
-    zs=interpolate((I,), z, Gridded(Linear()))(bx)
-    zx=diff(z)./hh
-    Lag=lagrangian(bx,rs,rx,zs,zx)
+    x=[M(i)[1] for i in ss]
+    r=[M(i)[2] for i in ss]
+    z=[M(i)[3] for i in ss]
+    s=ss[1:length(hh)]+hh./2
+    xx=interpolate((ss,), r, Gridded(Linear()))(s)
+    xs=diff(r)./hh
+    rr=interpolate((ss,), r, Gridded(Linear()))(s)
+    rs=diff(r)./hh
+    zz=interpolate((ss,), z, Gridded(Linear()))(s)
+    zs=diff(z)./hh
+    Lag=lagrangian(s,xx,xs,rr,rs,zz,zs)
     S=sum(hh .* Lag)
     return S
 end
 export action
 
-function interval(N::Int,L)
-    I=Vector{Float64}(undef, 2N-1)
-    I=sqrt.(Array(range(0,(L/2)^2,length=N)))
-    I=[-I[end:-1:1];I]
-    filter!(e->hash(e)!=hash(-0.0),I)
+function interval(N::Int)
+    I=Array(range(0,π,length=N))
+    I=cat([0,0,0],I,[π,π,π];dims=1)
     return I
 end
 export interval

@@ -1,8 +1,8 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.4"
+julia_version = "1.10.5"
 manifest_format = "2.0"
-project_hash = "d00f422eff56d05c6db00a48848197c7bbad46bf"
+project_hash = "ac62599557ebf80d7099d6de1c3d3b1722d96599"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "99a6f5d0ce1c7c6afdb759daa30226f71c54f6b0"
@@ -121,6 +121,17 @@ version = "1.1.0"
 
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
+
+[[deps.BasicBSpline]]
+deps = ["IntervalSets", "LinearAlgebra", "PrecompileTools", "SparseArrays", "StaticArrays"]
+git-tree-sha1 = "f579babb93fee8d881afbd998daf2291fda45c63"
+uuid = "4c5d9882-2acf-4ea4-9e48-968fd4518195"
+version = "0.11.2"
+weakdeps = ["ChainRulesCore", "RecipesBase"]
+
+    [deps.BasicBSpline.extensions]
+    BasicBSplineChainRulesCoreExt = "ChainRulesCore"
+    BasicBSplineRecipesBaseExt = "RecipesBase"
 
 [[deps.Bijections]]
 git-tree-sha1 = "95f5c7e2d177b7ba1a240b0518038b975d72a8c0"
@@ -2057,7 +2068,7 @@ version = "0.15.1+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+1"
+version = "5.11.0+0"
 
 [[deps.libdecor_jll]]
 deps = ["Artifacts", "Dbus_jll", "JLLWrappers", "Libdl", "Libglvnd_jll", "Pango_jll", "Wayland_jll", "xkbcommon_jll"]

@@ -124,3 +124,11 @@ function String_3DPlot(filename,P,zstar)
     plot!(title="P=$(P), z*=$(zstar)",dpi=500)
 end
 export String_3DPlot
+
+plot(M,xlabel="x",ylabel="r",zlabel="z")
+plot(ss,Mx,xlabel="σ",ylabel="x")
+
+
+Mx=[M(i)[1] for i in ss]
+Mr=[M(i)[2] for i in ss]
+Mz=[M(i)[3] for i in ss]

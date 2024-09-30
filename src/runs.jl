@@ -39,17 +39,19 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
     file = h5open("results/"*filename,"w")
     println("\nData file named ",filename,".h5 was created.")
     rmax = 8e1 # is cutoff
-    SNG(c, I) = action(c, I)
-    cons(res, c, I) = (res .= [c[1], c[Int(end/2)], c[Int(end/2)+1], c[end]])
+    ncp=10
+    KV = BSplineSpace{3}(KnotVector(interval(ncp)))
+    SNG(c, ss) = action(c, ss, KV)
+    cons(res, c, I) = (res .= [c[1],c[2],c[3],c[end],c[end-1],c[end-2]])
 
     #preinitialization
-    ll=60 #only even to make it work faster
+    NN=100
+    ss=range(0,pi,NN)
     Lint=(Array(range(cbrt(0.001),cbrt(0.07),length=40))).^3
 
     II=1:1:length(Lint)
     Eint=similar(Lint)
-    I = interval(ll,1)
-    sols=Array{Float64}(undef,length(Lint),2*length(I))
+    sols=Array{MVector}(undef,length(Lint),ncp+2)
 
     println("\nGetting started with the loop now.")
     file["P_list"]=P_list[:]
@@ -64,20 +66,26 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
             for i in II
                 # initialization
                 L = Lint[i]
-                I = interval(ll,L)
-                r0 = rmax/10 .* ones(length(I))
-                z0 = zstar .* ones(length(I)) #+ 0.1 .* ones(length(I)) - rand(length(I))./10
-                c0 = [r0;z0]
+
+                c0 = [MVector(i, rmax/10 , zstar*2) for i in range(-L/2,L/2,dim(KV))]
+                c0[1][2]=c0[end][2]=rmax
+                c0[1][3]=c0[end][3]=zstar
+                cc=fill([0.0,0.0,0.0],length(c0))
+                for i in 1:length(c0)
+                        cc[i]=c0[i]
+                end
+                ccc=vcat(cc...)
+
                 # optimization
                 if snap_flag==false
-                    eqconst = [rmax, rmax, zstar, zstar]
-                    lbounds = [fill(rst,length(I));fill(0,length(I))]
-                    ubounds = [fill(rmax,length(I));fill(P,length(I))]
-                    optprob = OptimizationFunction(SNG, Optimization.AutoReverseDiff(true), cons = cons)
-                    prob = OptimizationProblem(optprob, c0, I,; lcons = eqconst, ucons = eqconst, lb = lbounds, ub = ubounds)
+                    eqconst = [-L/2,rmax,zstar,L/2, rmax, zstar]
+                    #lbounds = [fill(rst,length(I));fill(0,length(I))]
+                    #ubounds = [fill(rmax,length(I));fill(P,length(I))]
+                    optprob = OptimizationFunction(SNG, Optimization.AutoFiniteDiff(), cons = cons)
+                    prob = OptimizationProblem(optprob, ccc, ss,; lcons = eqconst, ucons = eqconst)
                     sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
-                    Eint[i] = SNG(sol.u,I)
+                    Eint[i] = SNG(sol.u,ss,KV)
                     if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15 && snapping==true
                         snap_flag=true
                     end

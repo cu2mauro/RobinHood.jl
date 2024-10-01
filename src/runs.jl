@@ -36,22 +36,23 @@ export Run_Single_String
 function Run_Multiple_Strings(filename,P_list,zstar_list)
 
     snapping=false
+
     file = h5open("results/"*filename,"w")
     println("\nData file named ",filename,".h5 was created.")
+
     rmax = 8e1 # is cutoff
-    ncp=10
-    KV = BSplineSpace{3}(KnotVector(interval(ncp)))
+    NN=100 #number of points ALONG the curve for integration
+    ncp=10 #number of CONTROL POINTS of the curve
+    Nstrings=40 #number of different strings to optimize
+
+    KV=BSplineSpace{3}(KnotVector(interval(ncp))) #knot vector for control points
+    ss=range(0,pi,NN) #range for integration
     SNG(c, ss) = action(c, ss, KV)
-    cons(res, c, I) = (res .= [c[1],c[2],c[3],c[end],c[end-1],c[end-2]])
-
-    #preinitialization
-    NN=100
-    ss=range(0,pi,NN)
-    Lint=(Array(range(cbrt(0.001),cbrt(0.07),length=40))).^3
-
-    II=1:1:length(Lint)
-    Eint=similar(Lint)
-    sols=Array{MVector}(undef,length(Lint),ncp+2)
+    cons(res, c, I) = (res .= [c[1],c[2],c[3],c[end-2],c[end-1],c[end]])
+    Lint=(Array(range(cbrt(0.001),cbrt(0.07),length=Nstrings))).^3 #separations
+    II=1:1:Nstrings #to iterate all the strings 
+    Eint=similar(Lint) #energies
+    sols=Array{Float64}(undef,Nstrings,3*(ncp+2)) #solutions
 
     println("\nGetting started with the loop now.")
     file["P_list"]=P_list[:]
@@ -61,17 +62,17 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
             global P=PP
             global zstar=zz
             create_group(file, "P$(P)_z$(zstar)")
-            snap_flag=false
+            snap_flag=false #
             #Threads.@threads for i in II
             for i in II
                 # initialization
                 L = Lint[i]
 
-                c0 = [MVector(i, rmax/10 , zstar*2) for i in range(-L/2,L/2,dim(KV))]
+                c0 = [SizedVector(i, rmax/10 , zstar*2) for i in range(-L/2,L/2,dim(KV))]
                 c0[1][2]=c0[end][2]=rmax
                 c0[1][3]=c0[end][3]=zstar
                 cc=fill([0.0,0.0,0.0],length(c0))
-                for i in 1:length(c0)
+                for i in eachindex(c0)
                         cc[i]=c0[i]
                 end
                 ccc=vcat(cc...)
@@ -82,7 +83,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                     #lbounds = [fill(rst,length(I));fill(0,length(I))]
                     #ubounds = [fill(rmax,length(I));fill(P,length(I))]
                     optprob = OptimizationFunction(SNG, Optimization.AutoFiniteDiff(), cons = cons)
-                    prob = OptimizationProblem(optprob, ccc, ss,; lcons = eqconst, ucons = eqconst)
+                    prob = OptimizationProblem(optprob, c0, ss,; lcons = eqconst, ucons = eqconst)
                     sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
                     Eint[i] = SNG(sol.u,ss,KV)

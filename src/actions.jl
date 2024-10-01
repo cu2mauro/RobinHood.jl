@@ -4,13 +4,12 @@ function lagrangian(s,x,xs,r,rs,z,zs)
 end
 export lagrangian
 
-function action(c,ss,KV)
-    #now c is control points
-    cmat=reshape(c,(3,length(c)/3))
-    cm=Array{MVector{3,Float64}}(undef,length(c))
-    for i in 1:length(c)
-        cm[i]=MVector{3}(cmat[:,i])
-    end
+function action(cm,ss,KV)
+    #cmat=reshape(c,Int(length(c)/3),3)
+    #cm=Array{MVector{3,Float64}}(undef,length(c))
+    #for i in 1:length(c)
+    #    cm[i]=MVector{3}(cmat[:,i])
+    #end
     M=BSplineManifold(cm,KV)
     hh=[ss[2:1:end];0]-ss
     pop!(hh)

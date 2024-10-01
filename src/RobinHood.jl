@@ -1,12 +1,13 @@
 module RobinHood
 
+using StaticArrays
 using OptimizationOptimJL, ReverseDiff
 using Interpolations
 using NaNMath
 using Base.Threads
 using Plots
 using HDF5
-using BasicBSpline, StaticArrays
+using BasicBSpline
 
 include("backgrounds/background_simple.jl")
 include("plots.jl")

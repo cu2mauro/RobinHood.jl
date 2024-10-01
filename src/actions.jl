@@ -4,12 +4,12 @@ function lagrangian(s,x,xs,r,rs,z,zs)
 end
 export lagrangian
 
-function action(cm,ss,KV)
-    #cmat=reshape(c,Int(length(c)/3),3)
-    #cm=Array{MVector{3,Float64}}(undef,length(c))
-    #for i in 1:length(c)
-    #    cm[i]=MVector{3}(cmat[:,i])
-    #end
+function action(c,ss,KV)
+    cmat=transpose(reshape(c,3,Int(length(c)/3)))
+    cm=Array{SizedVector{3,Float64}}(undef,Int(length(c)/3))
+    for i in 1:Int(length(c)/3)
+        cm[i]=SizedVector{3}(cmat[i,:])
+    end
     M=BSplineManifold(cm,KV)
     hh=[ss[2:1:end];0]-ss
     pop!(hh)
@@ -17,7 +17,7 @@ function action(cm,ss,KV)
     r=[M(i)[2] for i in ss]
     z=[M(i)[3] for i in ss]
     s=ss[1:length(hh)]+hh./2
-    xx=interpolate((ss,), r, Gridded(Linear()))(s)
+    xx=interpolate((ss,), x, Gridded(Linear()))(s)
     xs=diff(r)./hh
     rr=interpolate((ss,), r, Gridded(Linear()))(s)
     rs=diff(r)./hh

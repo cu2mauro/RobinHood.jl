@@ -83,7 +83,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                     #lbounds = [fill(rst,length(I));fill(0,length(I))]
                     #ubounds = [fill(rmax,length(I));fill(P,length(I))]
                     optprob = OptimizationFunction(SNG, Optimization.AutoFiniteDiff(), cons = cons)
-                    prob = OptimizationProblem(optprob, c0, ss,; lcons = eqconst, ucons = eqconst)
+                    prob = OptimizationProblem(optprob, ccc, ss,; lcons = eqconst, ucons = eqconst)
                     sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
                     Eint[i] = SNG(sol.u,ss,KV)

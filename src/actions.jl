@@ -6,9 +6,9 @@ export lagrangian
 
 function action(c,ss,KV)
     cmat=transpose(reshape(c,3,Int(length(c)/3)))
-    cm=Array{SizedVector{3,Float64}}(undef,Int(length(c)/3))
+    cm=Array{Vector{Float64}}(undef,Int(length(c)/3))
     for i in 1:Int(length(c)/3)
-        cm[i]=SizedVector{3}(cmat[i,:])
+        cm[i]=cmat[i,:]
     end
     M=BSplineManifold(cm,KV)
     hh=[ss[2:1:end];0]-ss

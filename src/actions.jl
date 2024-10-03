@@ -31,7 +31,16 @@ export action
 
 function interval(N::Int)
     I=Array(range(0,π,length=N))
-    I=cat([0,0,0],I,[π,π,π];dims=1)
+    I=cat([0,0],I,[π,π];dims=1)
     return I
 end
 export interval
+
+function vec2man(c)
+    cmat=transpose(reshape(c,3,Int(length(c)/3)))
+    cm = [SizedVector(i, 54 , 2.3) for i in range(-L/2,L/2,Int(length(c)/3))]
+    for i in 1:Int(length(c)/3)
+        cm[i]=cmat[i,:]
+    end
+    return cm
+end

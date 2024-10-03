@@ -41,18 +41,18 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
     println("\nData file named ",filename,".h5 was created.")
 
     rmax = 8e1 # is cutoff
-    NN=50 #number of points ALONG the curve for integration
-    ncp=5 #number of CONTROL POINTS of the curve
-    Nstrings=40 #number of different strings to optimize
+    NN=20 #number of points ALONG the curve for integration
+    ncp=10 #number of CONTROL POINTS of the curve
+    Nstrings=10 #number of different strings to optimize
 
-    global KV=BSplineSpace{3}(KnotVector(interval(ncp))) #knot vector for control points
-    ss=range(0,pi,NN) #range for integration
+    global KV=BSplineSpace{2}(KnotVector(interval(ncp))) #knot vector for control points
+    ss=Array(range(0,pi,NN)) #range for integration
     SNG(c, ss) = action(c, ss, KV)
     cons(res, c, I) = (res .= [c[1],c[2],c[3],c[end-2],c[end-1],c[end]])
     Lint=(Array(range(cbrt(0.001),cbrt(0.07),length=Nstrings))).^3 #separations
     II=1:1:Nstrings #to iterate all the strings 
     Eint=similar(Lint) #energies
-    sols=Array{Float64}(undef,Nstrings,3*(ncp+2)) #solutions
+    sols=Array{Float64}(undef,Nstrings,3*(ncp+3)) #solutions
 
     println("\nGetting started with the loop now.")
     file["P_list"]=P_list[:]
@@ -68,23 +68,23 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                 # initialization
                 L = Lint[i]
 
-                c0 = [SizedVector(i, rmax-30 , zstar+1) for i in range(-L/2,L/2,dim(KV))]
-                c0[1][2]=c0[end][2]=rmax
-                c0[1][3]=c0[end][3]=zstar
+                c0 = [SizedVector(i, 54 , 2.3) for i in range(-L/3,L/3,dim(KV))]
+                #c0[1][2]=c0[end][2]=rmax
+                #c0[1][3]=c0[end][3]=zstar
                 cc=fill([0.0,0.0,0.0],length(c0))
                 for i in eachindex(c0)
                         cc[i]=c0[i]
                 end
                 ccc=vcat(cc...)
-
+                hh=0.01
                 # optimization
                 if snap_flag==false
                     eqconst = [-L/2,rmax,zstar,L/2, rmax, zstar]
-                    #lbounds = [fill(rst,length(I));fill(0,length(I))]
-                    #ubounds = [fill(rmax,length(I));fill(P,length(I))]
+                    lbounds=Float64[]; for i in 1:ncp-1 lbounds=vcat(lbounds,[-L/2,rst,0]) end
+                    ubounds=Float64[]; for i in 1:ncp-1 ubounds=vcat(ubounds,[L/2,rmax,P]) end
                     optprob = OptimizationFunction(SNG, Optimization.AutoFiniteDiff(), cons = cons)
-                    prob = OptimizationProblem(optprob, ccc, ss,; lcons = eqconst, ucons = eqconst)
-                    sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4,iterations=1)
+                    prob = OptimizationProblem(optprob, ccc, ss,; lcons = eqconst, ucons = eqconst, lb=lbounds, ub=ubounds)
+                    sol = solve(prob, Optim.IPNewton(),g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
                     Eint[i] = SNG(sol.u,ss,KV)
                     if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15 && snapping==true

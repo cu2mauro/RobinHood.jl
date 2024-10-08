@@ -45,7 +45,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
     ncp=10 #number of CONTROL POINTS of the curve
     Nstrings=10 #number of different strings to optimize
 
-    global KV=BSplineSpace{2}(KnotVector(interval(ncp))) #knot vector for control points
+    global KV=BSplineSpace{1}(KnotVector(interval(ncp))) #knot vector for control points
     ss=Array(range(0,pi,NN)) #range for integration
     SNG(c, ss) = action(c, ss, KV)
     cons(res, c, I) = (res .= [c[1],c[2],c[3],c[end-2],c[end-1],c[end]])
@@ -76,15 +76,14 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                         cc[i]=c0[i]
                 end
                 ccc=vcat(cc...)
-                hh=0.01
                 # optimization
                 if snap_flag==false
                     eqconst = [-L/2,rmax,zstar,L/2, rmax, zstar]
-                    lbounds=Float64[]; for i in 1:ncp-1 lbounds=vcat(lbounds,[-L/2,rst,0]) end
-                    ubounds=Float64[]; for i in 1:ncp-1 ubounds=vcat(ubounds,[L/2,rmax,P]) end
+                    lbounds=Float64[]; for i in 1:ncp lbounds=vcat(lbounds,[-L/2,rst,0]) end
+                    ubounds=Float64[]; for i in 1:ncp ubounds=vcat(ubounds,[L/2,rmax,P]) end
                     optprob = OptimizationFunction(SNG, Optimization.AutoFiniteDiff(), cons = cons)
                     prob = OptimizationProblem(optprob, ccc, ss,; lcons = eqconst, ucons = eqconst, lb=lbounds, ub=ubounds)
-                    sol = solve(prob, Optim.IPNewton(),g_tol=1e-12,x_tol=1e-4)
+                    sol = solve(prob, Optim.IPNewton())
                     sols[i,:] = sol.u
                     Eint[i] = SNG(sol.u,ss,KV)
                     if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15 && snapping==true

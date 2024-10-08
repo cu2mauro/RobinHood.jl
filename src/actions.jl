@@ -31,7 +31,7 @@ export action
 
 function interval(N::Int)
     I=Array(range(0,π,length=N))
-    I=cat([0,0],I,[π,π];dims=1)
+    I=cat(I;dims=1)
     return I
 end
 export interval

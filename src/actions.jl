@@ -18,7 +18,7 @@ function action(c,ss,KV)
     z=[M(i)[3] for i in ss]
     s=ss[1:length(hh)]+hh./2
     xx=interpolate((ss,), x, Gridded(Linear()))(s)
-    xs=diff(r)./hh
+    xs=diff(x)./hh
     rr=interpolate((ss,), r, Gridded(Linear()))(s)
     rs=diff(r)./hh
     zz=interpolate((ss,), z, Gridded(Linear()))(s)
@@ -37,6 +37,15 @@ function knots(N::Int,deg::Int)
     return I
 end
 export knots
+
+function interval(N::Int,L)
+    I=Vector{Float64}(undef, 2N-1)
+    I=sqrt.(Array(range(0,(L/2)^2,length=N)))
+    I=[-I[end:-1:1];I]
+    filter!(e->hash(e)!=hash(-0.0),I)
+    return I
+end
+export interval
 
 function vec2man(c)
     cmat=transpose(reshape(c,3,Int(length(c)/3)))

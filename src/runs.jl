@@ -41,10 +41,10 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
     println("\nData file named ",filename,".h5 was created.")
 
     rmax = 8e1 # is cutoff
-    NN=50 #number of points ALONG the curve for integration
-    ncp=50 #number of CONTROL POINTS of the curve
+    NN=14 #number of points ALONG the curve for integration
+    ncp=7 #number of CONTROL POINTS of the curve
     Nstrings=40 #number of different strings to optimize
-    deg=1 #degree of spline
+    deg=3 #degree of spline
 
     global KV=BSplineSpace{deg}(KnotVector(knots(ncp,deg))) #knot vector for control points
     ss=Array(range(0,pi,NN)) #range for integration

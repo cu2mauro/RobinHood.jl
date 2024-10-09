@@ -29,12 +29,14 @@ function action(c,ss,KV)
 end
 export action
 
-function interval(N::Int)
-    I=Array(range(0,π,length=N))
-    I=cat(I;dims=1)
+function knots(N::Int,deg::Int)
+    I=Array(range(0,π,length=N-deg+1))
+    for i in 1:deg 
+        I=cat([0],I,[π];dims=1) 
+    end
     return I
 end
-export interval
+export knots
 
 function vec2man(c)
     cmat=transpose(reshape(c,3,Int(length(c)/3)))

@@ -5,10 +5,10 @@ using OptimizationOptimJL, ReverseDiff
 using Interpolations
 using NaNMath
 using Base.Threads
-using Plots, PlotlyBase
+using Plots
 using HDF5
 using BasicBSpline
-
+using PlotlyBase
 plotly()
 include("backgrounds/background_simple.jl")
 include("plots.jl")

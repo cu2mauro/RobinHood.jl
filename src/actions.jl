@@ -29,14 +29,14 @@ function action(c,ss,KV)
 end
 export action
 
-function knots(N::Int,deg::Int)
+function knotvec(N::Int,deg::Int)
     I=Array(range(0,π,length=N-deg+1))
     for i in 1:deg 
         I=cat([0],I,[π];dims=1) 
     end
     return I
 end
-export knots
+export knotvec
 
 function interval(N::Int,L)
     I=Vector{Float64}(undef, 2N-1)
@@ -49,7 +49,7 @@ export interval
 
 function vec2man(c)
     cmat=transpose(reshape(c,3,Int(length(c)/3)))
-    cm = [SizedVector(i, 54 , 2.3) for i in range(-L/2,L/2,Int(length(c)/3))]
+    cm = [SizedVector(i, 54 , 2.3) for i in range(-1,1,Int(length(c)/3))]
     for i in 1:Int(length(c)/3)
         cm[i]=cmat[i,:]
     end

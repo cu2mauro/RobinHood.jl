@@ -44,7 +44,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
 
     #preinitialization
     ll=60 #only even to make it work faster
-    Lint=(Array(range(cbrt(0.001),cbrt(0.07),length=40))).^3
+    Lint=(Array(range(cbrt(0.001),cbrt(0.07),length=20))).^3
 
     II=1:1:length(Lint)
     Eint=similar(Lint)
@@ -75,7 +75,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
                     ubounds = [fill(rmax,length(I));fill(P,length(I))]
                     optprob = OptimizationFunction(SNG, Optimization.AutoReverseDiff(true), cons = cons)
                     prob = OptimizationProblem(optprob, c0, I,; lcons = eqconst, ucons = eqconst, lb = lbounds, ub = ubounds)
-                    sol = solve(prob, IPNewton(),g_tol=1e-12,x_tol=1e-4)
+                    sol = solve(prob, IPNewton())#,g_tol=1e-12,x_tol=1e-4)
                     sols[i,:] = sol.u
                     Eint[i] = SNG(sol.u,I)
                     if abs(sols[i,Int(end*3/4+0.5)]-(P/2))<0.15 && snapping==true

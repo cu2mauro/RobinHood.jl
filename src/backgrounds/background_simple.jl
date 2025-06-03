@@ -24,16 +24,22 @@ function Quiver_choice(quiverlabel)
         #EX3 IN PAPER ☐-◯-◯-◯-◯-◯-☐ 
         @eval α(z) = @. -81 * π^2 * N * (((1-P)/2*z + z^3/6) * iv(z,0,1)+(1/6 - P/2*z + 1/2*z^2) * iv(z,1,P-1)+((1-P)/2*(P-z) + 1/6*(P-z)^3) * iv(z,P-1,P)) 
         @eval α2(z) = @. -81 * π^2 * N * (z * iv(z,0,1)+1  * iv(z,1,P-1)+(P-z) * iv(z,P-1,P))
+    
+    elseif quiverlabel == 4
+        #ex not in paper ◯-◯-◯-◯-◯-◯-◯-◯
+        @eval α(z) = @. -27/2 * π^2 * N * (z^3 - P^2*z)
+        @eval α2(z) = @. -81 * π^2 * N * z
 
+    elseif quiverlabel == 5
+        @eval α(z) = @. 81/2 * π^2 * N * P^2 * sin(π*z/P)^2
+        @eval α2(z) = @. -81/2 * π^4 * N * sin(π*z/P)^2
     else
         error("Please choose a good quiver label.")
         return
     end
 
     
-    #ex not in paper ◯-◯-◯-◯-◯-◯-◯-◯
-    #α(z) = @. -27/2 * π^2 * N * (z^3 - P*(P+2)*z) 
-    #α2(z) = @. -81 * π^2 * N * z  
+    
 
     #ex not in paper ◯-◯-☐-◯-◯-◯-☐-◯-◯ 
     #global kk=4

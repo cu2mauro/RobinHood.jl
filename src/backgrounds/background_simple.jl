@@ -31,8 +31,8 @@ function Quiver_choice(quiverlabel)
         @eval α2(z) = @. -81 * π^2 * N * z
 
     elseif quiverlabel == 5
-        @eval α(z) = @. 81/2 * π^2 * N * P^2 * sin(π*z/P)^2
-        @eval α2(z) = @. -81/2 * π^4 * N * sin(π*z/P)^2
+        @eval α(z) = @. 81/2 * π^2 * N * P^2 * sin(π*z/P)
+        @eval α2(z) = @. -81/2 * π^4 * N * sin(π*z/P)
     else
         error("Please choose a good quiver label.")
         return

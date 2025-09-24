@@ -39,6 +39,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
     file = h5open("results/"*filename,"w")
     println("\nData file named ",filename,".h5 was created.")
     rmax = 8e1 # is cutoff
+    I = [a,b]
     SNG(c, I) = action(c, I)
     cons(res, c, I) = (res .= [c[1], c[Int(end/2)], c[Int(end/2)+1], c[end]])
 
@@ -64,7 +65,7 @@ function Run_Multiple_Strings(filename,P_list,zstar_list)
             for i in II
                 # initialization
                 L = Lint[i]
-                I = interval(ll,L)
+                Ia,Ib = interval_detach(ll,L,a,b)
                 r0 = rmax/10 .* ones(length(I))
                 z0 = zstar .* ones(length(I)) #+ 0.1 .* ones(length(I)) - rand(length(I))./10
                 c0 = [r0;z0]

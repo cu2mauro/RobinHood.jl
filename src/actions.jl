@@ -5,6 +5,7 @@ end
 export lagrangian
 
 function action(c,I)
+    II=interval_detach()
     hh=[I[2:1:end];0]-I
     pop!(hh)
     r=c[1:Int(length(c)/2)]
@@ -26,5 +27,12 @@ function interval(N::Int,L)
     I=[-I[end:-1:1];I]
     filter!(e->hash(e)!=hash(-0.0),I)
     return I
+end
+export interval
+
+function interval_detach(N::Int,L,a,b)
+    Ib=(Array(range(b,(L/2),length=N)))
+    Ia=(Array(range((L/2),a,length=N)))
+    return Ia, Ib
 end
 export interval

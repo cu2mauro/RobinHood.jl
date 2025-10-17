@@ -1,6 +1,6 @@
 module RobinHood
 
-using OptimizationOptimJL, Optimization, ReverseDiff, ForwardDiff
+using OptimizationOptimJL, Optimization
 using Interpolations
 using NaNMath
 using Base.Threads

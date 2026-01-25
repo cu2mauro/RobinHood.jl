@@ -1,0 +1,29 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: RobinHood.jl
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Mauro
+    family-names: Giliberti
+    email: mauro.giliberti@unifi.it
+    orcid: 'https://orcid.org/0000-0001-6190-6947'
+    affiliation: University of Florence
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.13758659
+repository-code: 'https://github.com/cu2mauro/RobinHood.jl'
+abstract: >-
+  RobinHood uses numerical optimization with Julia to solve
+  the Nambu-Goto holographic Wilson loops with various
+  quivers. Specifying their rank function in a supergravity
+  background, for each quiver it investigates confinement
+  and screening of the theory.
+keywords:
+  - wilson-loop
+  - action-minimization
+license: MIT
